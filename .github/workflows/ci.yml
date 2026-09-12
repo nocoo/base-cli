@@ -9,13 +9,12 @@ on:
 
 jobs:
   quality:
-    uses: nocoo/base-ci/.github/workflows/bun-quality.yml@aec4adc1a817c56790d1698329ef9398a15a754a  # v2026.5
+    uses: nocoo/base-ci/.github/workflows/quality.yml@ab52d72877d386c9a8fd224e9ac868e88be90539
     with:
-      # An exact version avoids setup-bun's GitHub Tags API lookup for `latest`.
-      bun-version: "1.3.14"
-      ignore-scripts: true
-      pre-command: "bun run build"
+      runtime-version: "1.3.14"
+      install-policy: "blocked"
+      prepare-command: "bun run build"
       test-command: "bun run test:coverage"
-      typecheck-command: "true"
-      enable-l2: "false"
+      typecheck: false
+      disabled-check-reasons: '{"typecheck": "build and lint already enforce typescript compilation"}'
     secrets: inherit
