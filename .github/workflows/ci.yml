@@ -16,6 +16,5 @@ jobs:
       coverage-path: "coverage"
       prepare-command: "bun run build"
       test-command: "bun run test:coverage"
-      typecheck: false
-      disabled-check-reasons: '{"typecheck": "build and lint already enforce typescript compilation"}'
+      typecheck-command: "bun run typecheck"
     secrets: inherit
