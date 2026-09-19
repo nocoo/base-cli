@@ -1,36 +1,10 @@
 <h1 align="center">base-cli</h1>
-
-<p align="center">
-  <strong>Shared CLI infrastructure for TypeScript projects</strong><br>
-  Configure · Authenticate · Update · Log
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/runtime-Bun-f9f1e1?logo=bun" alt="Bun">
-  <img src="https://img.shields.io/badge/lang-TypeScript-3178c6?logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/npm/v/@nocoo/base-cli" alt="npm version">
-  <img src="https://img.shields.io/badge/coverage-95%2B-brightgreen" alt="Coverage">
-  <img src="https://img.shields.io/github/license/nocoo/base-cli" alt="License">
-</p>
-
----
+<p align="center">为 TypeScript CLI 提供配置、登录、更新与日志工具。</p>
+<p align="center"><a href="docs/README.en.md">English</a></p>
 
 ## 这是什么
 
-base-cli 是一个 CLI 工具的基础设施库，为多个 CLI 项目提供统一的底层能力。避免在 pika、pew、otter 等项目中重复实现配置管理、OAuth 登录、自动更新等通用逻辑。
-
-```
-┌─────────────────────────────────────────────────┐
-│                   Your CLI                       │
-├─────────────────────────────────────────────────┤
-│  base-cli                                        │
-│  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌────────┐ │
-│  │ Config  │ │  Login  │ │ Update  │ │  Log   │ │
-│  └─────────┘ └─────────┘ └─────────┘ └────────┘ │
-├─────────────────────────────────────────────────┤
-│  citty · consola · picocolors · yocto-spinner   │
-└─────────────────────────────────────────────────┘
-```
+`@nocoo/base-cli` 是供 CLI 项目复用的基础库，提供配置文件、浏览器 OAuth、包更新和日志等通用能力。它不提供独立应用或托管服务。
 
 ## 功能
 
@@ -41,29 +15,32 @@ base-cli 是一个 CLI 工具的基础设施库，为多个 CLI 项目提供统�
 - **Browser** — 跨平台打开浏览器（macOS/Windows/Linux）
 - **Log** — consola 封装，formatDuration/formatSize/formatDate 格式化工具
 
-## 安装
+## 使用
 
 ```bash
 bun add @nocoo/base-cli
-# or
+# 二选一
 npm install @nocoo/base-cli
 ```
 
 > **迁移提示**：本包由 `@nocoo/cli-base` 更名而来，旧包已 deprecate。请直接安装 `@nocoo/base-cli`，import 路径同步替换即可，API 完全兼容。
 
-## 使用示例
-
 ### 配置管理
 
 ```typescript
+import { homedir } from "node:os";
+import { join } from "node:path";
 import { ConfigManager } from "@nocoo/base-cli";
 
-interface MyConfig {
+type MyConfig = {
   token?: string;
   deviceId?: string;
 }
 
-const config = new ConfigManager<MyConfig>("~/.config/my-cli", isDev);
+const config = new ConfigManager<MyConfig>(
+  join(homedir(), ".config", "my-cli"),
+  false,
+);
 config.write({ token: "xxx" });
 const token = config.get("token");
 ```
@@ -93,22 +70,27 @@ if (pm && latest) {
 }
 ```
 
-## 项目结构
+## 开发
 
+使用 Bun 安装依赖；CI 固定 Bun 1.3.14。源码在 `src/`，TypeScript 构建输出 JavaScript 与声明文件到 `dist/`。
+
+```sh
+bun install --frozen-lockfile
+bun run typecheck
+bun run lint
+bun run build
 ```
-base-cli/
-├── src/
-│   ├── index.ts          # 导出所有模块
-│   ├── config.ts         # ConfigManager 泛型类
-│   ├── login.ts          # OAuth 登录流程
-│   ├── update.ts         # 更新检测工具
-│   ├── version.ts        # 版本读取与比较
-│   ├── browser.ts        # 跨平台浏览器打开
-│   └── log.ts            # consola 封装
-├── package.json
-├── tsconfig.json
-└── vitest.config.ts
+
+npm 包发布 `dist/`；只做类型检查不会生成可发布构件。版本和发布流程见维护说明。
+
+## 测试
+
+```sh
+bun run test
+bun run test:coverage
 ```
+
+Vitest 覆盖配置、版本、更新与日志工具，以及实际 loopback HTTP 登录回调。配置使用临时目录；测试不登录真实服务。
 
 ## 技术栈
 
@@ -120,40 +102,12 @@ base-cli/
 | 进度 | [yocto-spinner](https://github.com/sindresorhus/yocto-spinner) |
 | 测试 | [Vitest](https://vitest.dev) |
 
-## 开发
+## 文档
 
-**环境要求：** Bun 1.0+, Node.js 18+
+- [公共导出](src/index.ts)与[配置实现](src/config.ts)。
+- [OAuth 登录契约](src/login.ts)与[更新工具](src/update.ts)。
+- [维护与发布说明](CLAUDE.md)、[变更记录](CHANGELOG.md)。
 
-```bash
-git clone https://github.com/nocoo/base-cli.git
-cd base-cli
-bun install
-```
+## 许可证
 
-| 命令 | 说明 |
-|------|------|
-| `vitest run` | 运行测试 |
-| `bun run test:coverage` | 运行测试并输出覆盖率 |
-| `bun run lint` | 类型检查 + Biome lint |
-| `bun run build` | 编译 TypeScript |
-
-## 测试
-
-| 层 | 内容 | 触发时机 |
-|---|------|---------|
-| L1 | 单元测试 | pre-commit `bun run test`（无覆盖率阈值）；95% 四项在 CI `test:coverage` |
-| G1 | tsc + Biome | pre-commit + CI |
-| G2 secrets | gitleaks | pre-commit + CI；pre-push 在二进制缺失时 skip |
-| G2 deps | osv-scanner | pre-push + CI |
-
-```bash
-bun run test:coverage
-```
-
-## 发布
-
-npm 包 `files` 为 `dist/`（`main`/`types` 也在 `dist/` 下）。`dist/` 已 gitignore。发布入口：`bun run build && bun run release`。`scripts/release.ts` 本身不会执行 build。
-
-## License
-
-[MIT](LICENSE) © 2026
+[MIT](LICENSE)
