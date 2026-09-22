@@ -106,7 +106,7 @@ Vitest 覆盖配置、版本、更新与日志工具，以及实际 loopback HTT
 
 - [公共导出](src/index.ts)与[配置实现](src/config.ts)。
 - [OAuth 登录契约](src/login.ts)与[更新工具](src/update.ts)。
-- [维护与发布说明](CLAUDE.md)、[变更记录](CHANGELOG.md)。
+- [维护与发布说明](AGENTS.md)、[变更记录](CHANGELOG.md)。
 
 ## 许可证
 

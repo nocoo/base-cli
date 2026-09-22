@@ -106,7 +106,7 @@ Vitest covers configuration, version, update and logging utilities, including re
 
 - [Public exports](../src/index.ts) and [configuration implementation](../src/config.ts).
 - [OAuth login contract](../src/login.ts) and [update utilities](../src/update.ts).
-- [Maintenance and publication](../CLAUDE.md), [changelog](../CHANGELOG.md).
+- [Maintenance and publication](../AGENTS.md), [changelog](../CHANGELOG.md).
 
 ## License
 
