@@ -23,7 +23,7 @@
     "citty": "^0.2.2",
     "consola": "^3.4.2",
     "picocolors": "^1.1.1",
-    "yocto-spinner": "^1.1.0"
+    "yocto-spinner": "1.2.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
