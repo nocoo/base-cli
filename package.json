@@ -1,6 +1,6 @@
 {
   "name": "@nocoo/base-cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Shared CLI infrastructure for hexly.ai projects",
   "type": "module",
   "main": "dist/index.js",
@@ -28,10 +28,10 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "@types/node": "26.6.5",
-    "@vitest/coverage-v8": "5.0.4",
+    "@vitest/coverage-v8": "5.0.5",
     "husky": "^9.1.7",
     "typescript": "^7.0.2",
-    "vitest": "5.0.4"
+    "vitest": "5.0.5"
   },
   "keywords": [
     "cli",
