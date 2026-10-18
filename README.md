@@ -1,6 +1,7 @@
+<p align="center"><img src="assets/brand/icon-rounded.png" width="128" alt="base-cli logo" /></p>
 <h1 align="center">base-cli</h1>
 <p align="center">为 TypeScript CLI 提供配置、登录、更新与日志工具。</p>
-<p align="center"><a href="docs/README.en.md">English</a></p>
+<p align="center"><a href="https://hexly.ai/projects/base-cli">Hexly 项目档案</a> · <a href="docs/README.en.md">English</a></p>
 
 ## 这是什么
 
@@ -22,8 +23,6 @@ bun add @nocoo/base-cli
 # 二选一
 npm install @nocoo/base-cli
 ```
-
-> **迁移提示**：本包由 `@nocoo/cli-base` 更名而来，旧包已 deprecate。请直接安装 `@nocoo/base-cli`，import 路径同步替换即可，API 完全兼容。
 
 ### 配置管理
 
@@ -107,6 +106,7 @@ Vitest 覆盖配置、版本、更新与日志工具，以及实际 loopback HTT
 - [公共导出](src/index.ts)与[配置实现](src/config.ts)。
 - [OAuth 登录契约](src/login.ts)与[更新工具](src/update.ts)。
 - [维护与发布说明](AGENTS.md)、[变更记录](CHANGELOG.md)。
+- [品牌素材与使用范围](assets/brand/README.md)。
 
 ## 许可证
 

@@ -1,6 +1,7 @@
+<p align="center"><img src="../assets/brand/icon-rounded.png" width="128" alt="base-cli logo" /></p>
 <h1 align="center">base-cli</h1>
 <p align="center">Configuration, login, update and logging utilities for TypeScript CLIs.</p>
-<p align="center"><a href="../README.md">简体中文</a></p>
+<p align="center"><a href="https://hexly.ai/projects/base-cli">Hexly project archive</a> · <a href="../README.md">简体中文</a></p>
 
 ## What it does
 
@@ -22,8 +23,6 @@ bun add @nocoo/base-cli
 # Choose one
 npm install @nocoo/base-cli
 ```
-
-This package was renamed from `@nocoo/cli-base`; install `@nocoo/base-cli` and update your import paths.
 
 ### Configuration
 
@@ -107,6 +106,7 @@ Vitest covers configuration, version, update and logging utilities, including re
 - [Public exports](../src/index.ts) and [configuration implementation](../src/config.ts).
 - [OAuth login contract](../src/login.ts) and [update utilities](../src/update.ts).
 - [Maintenance and publication](../AGENTS.md), [changelog](../CHANGELOG.md).
+- [Brand assets and usage](../assets/brand/README.md).
 
 ## License
 
