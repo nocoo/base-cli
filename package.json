@@ -1,6 +1,6 @@
 {
   "name": "@nocoo/base-cli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Shared CLI infrastructure for hexly.ai projects",
   "type": "module",
   "main": "dist/index.js",
@@ -54,7 +54,7 @@
     "nanoid": "^3.3.18",
     "postcss": "^8.5.23",
     "esbuild": "^0.28.1",
-    "vite": "^7.3.5",
+    "vite": "7.3.7",
     "source-map-js": "1.2.2"
   }
 }
