@@ -9,7 +9,7 @@
 
 import { execSync } from "node:child_process";
 import { defineCommand } from "citty";
-import { consola } from "./log.js";
+import { consola } from "consola";
 import {
 	detectPackageManager,
 	getLatestVersion,
