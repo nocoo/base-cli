@@ -44,7 +44,7 @@ Statuses: `enforced` (configured execution with evidence), `planned` (required b
 
 | Dimension | Required proof | Status | Current enforcement / gap |
 | --- | --- | --- | --- |
-| L1 pre-commit quality | UT with statements, branches, functions and lines each ≥95%, no `.skip`/`.only`; strict types and check-only lint/format with zero errors/warnings | planned | CI runs `test:coverage` with four 95% thresholds; installed pre-commit and CI run typecheck/lint (strict TS excludes test files). `src/update-command.ts`, `src/index.ts` and `scripts/**` are configured coverage exclusions by design. Pre-commit tests the working tree without coverage thresholds, so index-snapshot, <30s timing and rejection are unverified |
+| L1 pre-commit quality | UT with statements, branches, functions and lines each ≥95%, no `.skip`/`.only`; strict types and check-only lint/format with zero errors/warnings | enforced | Husky pre-commit runs gitleaks on staged content, then `git checkout-index` into a temp dir with node_modules symlinks and runs `typecheck`, `lint` and `test:coverage` (Vitest four-metric ≥95% thresholds). Cleanup on exit/interrupt; package.json/bun.lock must match installed copies. `src/update-command.ts`, `src/index.ts` and `scripts/**` remain configured coverage exclusions by design |
 | L2 callback integration | Real HTTP for every callback endpoint/method and failure path | planned | `src/login.test.ts` sends real loopback HTTP in the normal Vitest suite; no complete method inventory or dedicated pre-push L2 gate exists |
 | L3 user workflow | Real consumer CLI login/config/update journey | planned | No shipped standalone CLI or process-level consumer acceptance suite; absence of a browser runner does not make this unnecessary |
 | G2 security | Dependency and secret scans; missing tools fail | enforced | CI uses pinned `base-ci/quality.yml` with both scanners; local pre-push still skips missing Gitleaks and scans the working directory |
@@ -54,7 +54,7 @@ Statuses: `enforced` (configured execution with evidence), `planned` (required b
 
 | Hook | Current behavior | Required follow-up |
 | --- | --- | --- |
-| pre-commit | Working-tree typecheck, lint, tests without coverage; staged Gitleaks | Unified L1 on an index snapshot, <30s |
+| pre-commit | Index snapshot: gitleaks, typecheck, lint, `test:coverage` (four metrics ≥95%); temp dir cleanup | Warm-path timing verified locally; keep under 30s |
 | pre-push | Working-directory Gitleaks and OSV on `bun.lock` | Fail on missing scanners; check stdin push refs and run L2, <3min |
 
 `bun install` runs the existing Husky prepare step; verify hooks are installed in a new checkout. Hooks are check-only. Never use `--no-verify` on commits or branch pushes.
