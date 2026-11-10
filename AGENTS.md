@@ -58,7 +58,7 @@ Statuses: `enforced` (configured execution with evidence), `planned` (required b
 | pre-push | Working-directory Gitleaks and OSV on `bun.lock` | Fail on missing scanners; check stdin push refs and run L2, <3min |
 
 `bun install` runs the existing Husky prepare step; verify hooks are installed in a new checkout. Hooks are check-only. Never use `--no-verify` on commits or branch pushes.
-CI pins `nocoo/base-ci/.github/workflows/quality.yml@ac635753a869cb85fad1f52aae4ccbd6119f3cae`; do not substitute a moving tag.
+CI pins `nocoo/base-ci/.github/workflows/quality.yml@1ea10ecab22b72512399485391603fe03a161016` (# v2026.12); do not substitute a moving tag.
 
 ## Operations / release
 
