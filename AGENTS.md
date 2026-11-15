@@ -39,26 +39,30 @@ bun run release --dry-run
 
 ## Testing and quality contract
 
-6DQ keeps its name with unified L1, L2/L3, G2 and D1; the owner merged former G1 into L1 on 2026-09-21.
-Statuses: `enforced` (configured execution with evidence), `planned` (required but incomplete), `manual`, `N/A`.
+Quality follows `system1-quality` (v1.3.0) with 12 canonical slots (`impl`, `todo`, `na`) and `nocoo/base-ci` v2026.15 (`777bbe4f9bacab8a91d8c01974480a6ee23d28e0`) in native mode (`quality-slots.yml`).
 
-| Dimension | Required proof | Status | Current enforcement / gap |
+| Slot | Required proof | Status | Current enforcement / gap |
 | --- | --- | --- | --- |
-| L1 pre-commit quality | UT with statements, branches, functions and lines each ≥95%, no `.skip`/`.only`; strict types and check-only lint/format with zero errors/warnings | enforced | Husky pre-commit runs gitleaks on staged content, then `git checkout-index` into a temp dir with node_modules symlinks and runs `typecheck`, `lint` and `test:coverage` (Vitest four-metric ≥95% thresholds). Cleanup on exit/interrupt; package.json/bun.lock must match installed copies. `src/update-command.ts`, `src/index.ts` and `scripts/**` remain configured coverage exclusions by design |
-| L2 callback integration | Real HTTP for every callback endpoint/method and failure path | planned | `src/login.test.ts` sends real loopback HTTP in the normal Vitest suite; no complete method inventory or dedicated pre-push L2 gate exists |
-| L3 user workflow | Real consumer CLI login/config/update journey | planned | No shipped standalone CLI or process-level consumer acceptance suite; absence of a browser runner does not make this unnecessary |
-| G2 security | Dependency and secret scans; missing tools fail | enforced | CI uses pinned `base-ci/quality.yml` with both scanners; local pre-push still skips missing Gitleaks and scans the working directory |
-| D1 isolation | Per-run temporary state, loopback servers and guarded cleanup | planned | Config/version tests use temporary directories and login uses ephemeral ports; timestamps are not exclusive allocation and cleanup lacks a common guard |
-| Build | Fresh emitted library and declarations | enforced | CI `prepare-command: bun run build` |
-| Docs / release | README API changes, version and changelog reviewed | manual | Maintainer review; release hook-bypass defect must be fixed before relying on automation |
+| S1: Types | Strict TypeScript (`bun run typecheck`) | enforced (`impl`) | Husky pre-commit index snapshot & CI `s1-types` |
+| S2: Lint | Biome check-only (`bun run lint`) | enforced (`impl`) | Husky pre-commit index snapshot & CI `s2-lint` |
+| S3: Workflow | `actionlint` + 40-char SHA pinning | enforced (`impl`) | CI `s3-workflow` |
+| G1: Secrets | Gitleaks scan (`.gitleaks.toml`) | enforced (`impl`) | Staged `gitleaks` in pre-commit; pre-push & CI `g1-secrets` |
+| G2: Dependencies | `osv-scanner` (`osv-scanner.toml`, `bun.lock`) | enforced (`impl`) | Pre-push & CI `g2-dependencies` |
+| B1: Build | Fresh emitted library and declarations (`bun run build`) | enforced (`impl`) | CI `b1-build` |
+| L1: Unit | Vitest statements/branches/functions/lines each ≥95%, no `.skip`/`.only` | enforced (`impl`) | Husky pre-commit index snapshot (`test:coverage`) & CI `l1-unit` (`src/update-command.ts`, `src/index.ts`, `scripts/**` excluded by design) |
+| L2: Runtime | Cloudflare Worker / platform runtime bindings | N/A (`na`) | Non-Cloudflare Worker project without workerd/miniflare tests |
+| L3: Integration | Standalone HTTP service integration | N/A (`na`) | OAuth loopback HTTP is covered in L1 Vitest |
+| L4: E2E | Browser / Playwright E2E | N/A (`na`) | CLI foundation library without browser UI |
+| P1: Package | `npm pack` / `publint` validation | planned (`todo`) | `@nocoo/base-cli` CI package gate not yet wired |
+| Z1: Gate | Aggregate all `impl` slots & SHA consistency | enforced (`impl`) | CI `z1-gate` (`quality / Z1: Gate`) |
 
 | Hook | Current behavior | Required follow-up |
 | --- | --- | --- |
 | pre-commit | Index snapshot: gitleaks, typecheck, lint, `test:coverage` (four metrics ≥95%); temp dir cleanup | Warm-path timing verified locally; keep under 30s |
-| pre-push | Working-directory Gitleaks and OSV on `bun.lock` | Fail on missing scanners; check stdin push refs and run L2, <3min |
+| pre-push | Working-directory Gitleaks and OSV on `bun.lock` | Fail on missing scanners; check stdin push refs, <3min |
 
 `bun install` runs the existing Husky prepare step; verify hooks are installed in a new checkout. Hooks are check-only. Never use `--no-verify` on commits or branch pushes.
-CI pins `nocoo/base-ci/.github/workflows/quality.yml@1ea10ecab22b72512399485391603fe03a161016` (# v2026.12); do not substitute a moving tag.
+CI runs `.github/workflows/ci.yml` -> `./.github/workflows/quality-slots.yml` (`v2026.15` composite actions), gated on `quality / Z1: Gate`.
 
 ## Operations / release
 

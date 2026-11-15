@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 6DQ Pre-push: G2 (Security scanning)
+# Pre-push: G1 + G2 security scanning
 echo "🔒 Running pre-push checks..."
 
 # G2: Security - gitleaks
