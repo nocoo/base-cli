@@ -10,7 +10,7 @@ Run from root with Bun (`1.3.14` in CI) and Node (`26.12.1` in CI). Strict TypeS
 ```sh
 bun install --frozen-lockfile
 bun run typecheck          # S1 (excludes **/*.test.ts)
-bun run lint               # S2: tsc --noEmit + biome check --error-on-warnings
+bun run lint               # S2: biome check --error-on-warnings src/
 bun run build              # B1: emits dist/ and .d.ts declarations
 bun run test               # Vitest run (includes real loopback OAuth tests)
 bun run test:coverage      # L1: >= 95% statements/branches/functions/lines
