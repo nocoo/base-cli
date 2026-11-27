@@ -32,7 +32,7 @@ bun run release --dry-run  # Preview release bump & changelog only
 
 ## Quality & Local Gates
 
-Follows `system1-quality`; CI slot definitions and pinned `base-ci` revision live in [.github/workflows/quality-slots.yml](.github/workflows/quality-slots.yml) via [.github/workflows/ci.yml](.github/workflows/ci.yml) (`quality / Z1: Gate` required on `main`). Status vocabulary: `enforced`, `planned`, `manual`, `N/A`.
+Follows `system1-quality`; CI slot definitions and pinned `base-ci` (`v2026.24`) revision live in [.github/workflows/quality-slots.yml](.github/workflows/quality-slots.yml) via [.github/workflows/pipeline.yml](.github/workflows/pipeline.yml) (`quality / Z1: Gate` required on `main`). No automated CD workflow: releases use local `npm publish` only. Status vocabulary: `enforced`, `planned`, `manual`, `N/A`.
 
 - **Coverage boundary**: `L1 Unit` enforces >=95% statements/branches/functions/lines, no `.skip`/`.only`; `vitest.config.ts` excludes `scripts/**`, `src/index.ts` (barrel), and `src/update-command.ts` (gap).
 - **Exceptions / gaps**: `L2 Runtime` is `N/A` (not a Worker); `L3 Integration` is `N/A` (loopback HTTP tested in L1); `L4 E2E` is `N/A` (no browser UI); `P1 Package` is `planned` (`npm pack`/`publint` not wired).
