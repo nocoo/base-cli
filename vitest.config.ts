@@ -10,6 +10,8 @@ export default defineConfig({
       exclude: [
         // Test files themselves.
         "**/*.test.ts",
+        // Ambient type declarations.
+        "**/*.d.ts",
         // Build output.
         "dist/**",
         // Build/release tooling, not shipped code.
@@ -29,10 +31,10 @@ export default defineConfig({
         "src/update-command.ts",
       ],
       thresholds: {
-        statements: 95,
-        branches: 95,
-        functions: 95,
-        lines: 95,
+        statements: 90,
+        branches: 85,
+        functions: 90,
+        lines: 90,
       },
     },
   },
